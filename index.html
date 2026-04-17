@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Warble Tech — Sovereign Cognitive Infrastructure</title>
+  <meta name="description" content="Warble Cloud's Reflexion Engine: AI-native incident response and root cause analysis for enterprise SRE teams. Built on GCP, powered by Claude + Gemini." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #0f0f1a;
+      --bg3: #13131f;
+      --border: rgba(255,255,255,0.08);
+      --accent: #6c63ff;
+      --accent2: #4fc3f7;
+      --accent3: #a78bfa;
+      --text: #e8e8f0;
+      --muted: #8888a0;
+      --card: rgba(255,255,255,0.03);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 1.2rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      padding: .5rem 1.2rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600;
+      background: var(--accent); color: #fff; text-decoration: none; transition: opacity .2s;
+    }
+    .nav-cta:hover { opacity: .85; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(108, 99, 255, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(79, 195, 247, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .35rem 1rem; border-radius: 100px;
+      border: 1px solid rgba(108,99,255,.4);
+      background: rgba(108,99,255,.1);
+      font-size: 0.8rem; font-weight: 500; color: var(--accent3);
+      margin-bottom: 1.5rem; letter-spacing: .04em;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent3); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.4; } }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 800; line-height: 1.1;
+      letter-spacing: -0.02em;
+      max-width: 900px;
+    }
+    h1 .gradient {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, var(--accent3) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub {
+      margin-top: 1.5rem;
+      max-width: 600px;
+      font-size: 1.15rem; color: var(--muted); line-height: 1.7;
+    }
+    .hero-actions { display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; justify-content: center; }
+    .btn-primary {
+      padding: .8rem 2rem; border-radius: 8px; font-size: 0.95rem; font-weight: 600;
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      color: #fff; text-decoration: none; border: none; cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 4px 24px rgba(108,99,255,.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(108,99,255,.45); }
+    .btn-ghost {
+      padding: .8rem 2rem; border-radius: 8px; font-size: 0.95rem; font-weight: 500;
+      border: 1px solid var(--border); color: var(--text); text-decoration: none;
+      transition: border-color .2s, background .2s;
+    }
+    .btn-ghost:hover { border-color: var(--accent); background: rgba(108,99,255,.07); }
+
+    .hero-stat-row {
+      display: flex; gap: 3rem; margin-top: 4rem;
+      flex-wrap: wrap; justify-content: center;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 800; color: var(--accent2); }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: .2rem; letter-spacing: .04em; text-transform: uppercase; }
+
+    /* SECTIONS */
+    section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.78rem; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: .75rem;
+    }
+    h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700; line-height: 1.2; letter-spacing: -.02em;
+    }
+    .section-sub {
+      margin-top: 1rem; max-width: 560px;
+      color: var(--muted); font-size: 1.05rem; line-height: 1.7;
+    }
+
+    /* PROBLEM / SOLUTION */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 3rem; align-items: start; }
+    @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+    .problem-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem;
+    }
+    .problem-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: var(--accent3); }
+    .problem-card ul { list-style: none; display: flex; flex-direction: column; gap: .75rem; }
+    .problem-card li { display: flex; gap: .75rem; color: var(--muted); font-size: 0.95rem; }
+    .problem-card li::before { content: '✗'; color: #f87171; flex-shrink: 0; }
+    .solution-card { border-color: rgba(108,99,255,.25); background: rgba(108,99,255,.05); }
+    .solution-card li::before { content: '✓'; color: #34d399; }
+    .solution-card h3 { color: var(--accent2); }
+
+    /* FEATURE GRID */
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .feature-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .feature-card:hover { border-color: rgba(108,99,255,.4); transform: translateY(-4px); }
+    .feature-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .feature-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: .6rem; }
+    .feature-card p { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+
+    /* STACK TABLE */
+    .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 3rem; }
+    .stack-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.25rem 1.5rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+    }
+    .stack-layer {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; font-weight: 500;
+      color: var(--accent); background: rgba(108,99,255,.12);
+      padding: .2rem .5rem; border-radius: 4px;
+      white-space: nowrap; margin-top: .1rem;
+    }
+    .stack-info h4 { font-size: 0.9rem; font-weight: 600; }
+    .stack-info p { font-size: 0.8rem; color: var(--muted); margin-top: .2rem; }
+
+    /* ROADMAP */
+    .roadmap { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 3rem; }
+    .roadmap-item {
+      display: flex; gap: 1.5rem; align-items: flex-start;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem;
+    }
+    .roadmap-phase {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; font-weight: 500; color: var(--accent2);
+      background: rgba(79,195,247,.1); border: 1px solid rgba(79,195,247,.2);
+      padding: .25rem .6rem; border-radius: 4px; white-space: nowrap;
+    }
+    .roadmap-content h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: .4rem; }
+    .roadmap-content ul { list-style: none; display: flex; flex-direction: column; gap: .3rem; }
+    .roadmap-content li { color: var(--muted); font-size: 0.85rem; padding-left: 1rem; position: relative; }
+    .roadmap-content li::before { content: '→'; position: absolute; left: 0; color: var(--accent); }
+
+    /* ROLES */
+    .roles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .role-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem; position: relative; overflow: hidden;
+    }
+    .role-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+    .role-title { font-size: 1.05rem; font-weight: 700; margin-bottom: .4rem; }
+    .role-mission { font-size: 0.85rem; color: var(--accent3); margin-bottom: 1rem; }
+    .role-skills { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .skill-tag {
+      font-size: 0.72rem; font-family: 'JetBrains Mono', monospace;
+      padding: .2rem .6rem; border-radius: 4px;
+      background: rgba(255,255,255,.05); border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    /* CTA SECTION */
+    .cta-section {
+      text-align: center;
+      padding: 5rem 2rem 6rem;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 80% at 50% 100%, rgba(108,99,255,.12) 0%, transparent 60%);
+    }
+    .cta-section h2 { max-width: 600px; margin: 0 auto; }
+    .cta-section p { color: var(--muted); margin: 1.2rem auto 0; max-width: 480px; font-size: 1rem; }
+    .cta-section .hero-actions { margin-top: 2rem; }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg); border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+      font-size: 0.85rem; color: var(--muted);
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+    .footer-links { display: flex; gap: 1.5rem; }
+
+    /* DIVIDER */
+    .full-width { max-width: 100%; padding-left: 0; padding-right: 0; }
+    .inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+    /* TERMINAL BLOCK */
+    .terminal {
+      background: #0d0d14; border: 1px solid rgba(108,99,255,.25);
+      border-radius: 12px; padding: 1.5rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+      color: #a0a8c0; margin-top: 2rem; line-height: 1.8;
+      max-width: 640px;
+    }
+    .terminal .prompt { color: var(--accent2); }
+    .terminal .comment { color: #4a5568; }
+    .terminal .success { color: #34d399; }
+    .terminal .value { color: var(--accent3); }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-logo">⬡ Warble Tech</span>
+    <ul class="nav-links">
+      <li><a href="#product">Product</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#roles">Roles</a></li>
+    </ul>
+    <a href="mailto:avinash.etrx@gmail.com" class="nav-cta">Get Early Access</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="badge"><span class="badge-dot"></span> Sovereign Cognitive Infrastructure</div>
+    <h1>
+      AI-Native Incident Response<br/>
+      for <span class="gradient">Enterprise SRE Teams</span>
+    </h1>
+    <p class="hero-sub">
+      Warble Cloud's <strong>Reflexion Engine</strong> turns P1 alerts into ranked root-cause
+      hypotheses in under 10 seconds — powered by Claude + Gemini, deployed on GCP,
+      gated by human-in-the-loop controls.
+    </p>
+    <div class="hero-actions">
+      <a href="mailto:avinash.etrx@gmail.com" class="btn-primary">Request Early Access</a>
+      <a href="#product" class="btn-ghost">Explore the Architecture →</a>
+    </div>
+    <div class="hero-stat-row">
+      <div class="stat">
+        <div class="stat-num">&lt;10s</div>
+        <div class="stat-label">P99 RCA latency</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">40–60%</div>
+        <div class="stat-label">Token cost reduction</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">12 wks</div>
+        <div class="stat-label">MVP to production</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">$220/mo</div>
+        <div class="stat-label">From $50k runaway spend</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROBLEM / SOLUTION -->
+  <section id="product">
+    <div class="section-label">The Problem</div>
+    <h2>SRE teams are drowning in noise.<br/>Traditional tooling can't keep up.</h2>
+    <p class="section-sub">
+      When a P1 fires at 3 AM, your team shouldn't be grepping logs manually, running
+      ad hoc queries, and waiting 45 minutes to understand what broke.
+    </p>
+    <div class="two-col">
+      <div class="problem-card">
+        <h3>The Old Way</h3>
+        <ul>
+          <li>Manual log grep across 12 services</li>
+          <li>45+ minute mean-time-to-understand</li>
+          <li>6-week compliance audit cycles</li>
+          <li>$50k+ monthly runaway LLM spend</li>
+          <li>No audit trail for AI-assisted decisions</li>
+          <li>Deterministic rules miss novel failure modes</li>
+        </ul>
+      </div>
+      <div class="problem-card solution-card">
+        <h3>The Reflexion Engine</h3>
+        <ul>
+          <li>Streaming RCA in under 10 seconds P99</li>
+          <li>Actor/Critic loop with confidence-scored hypotheses</li>
+          <li>48-hour compliance audit with exportable PDF</li>
+          <li>Gemini/Claude routing keeps costs 40–60% lower</li>
+          <li>Human-in-the-loop gate with full audit trail</li>
+          <li>Learns from rejected hypotheses over time</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section>
+    <div class="section-label">Core Capabilities</div>
+    <h2>Built for SREs who need<br/>answers, not more dashboards.</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔁</div>
+        <h3>Actor / Critic Agent Loop</h3>
+        <p>
+          The Actor proposes root-cause hypotheses; the Critic scores and rejects them
+          with confidence thresholds. Rejected hypotheses feed back into prompt template
+          fine-tuning — the engine gets sharper over time.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Streaming RCA Pipeline</h3>
+        <p>
+          Incident signal flows from Prometheus/Cloud Ops → Pub/Sub → Eventarc →
+          Reflexion Engine. Embedding search, hypothesis generation, and ranked output
+          all under 10 seconds P99. Zero polling.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Human-in-the-Loop Gate</h3>
+        <p>
+          Any Terraform or kubectl action affecting more than 5 nodes triggers a
+          Cloud Workflows approval state machine. Durable, auditable, integrated with
+          Slack — not a webhook hack.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💸</div>
+        <h3>Token Cliff Guard</h3>
+        <p>
+          A dynamic context window manager prunes conversation history and
+          selectively re-inserts relevant prior turns. Pair with Cloud Billing API
+          budget alerts — prevents the $50k → $220/mo horror story.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔀</div>
+        <h3>Gemini + Claude Routing</h3>
+        <p>
+          A model router scores query complexity and sends broad sweeps to Gemini 2.0
+          Flash ($0.075/M tokens) while escalating deep RCA to Claude Sonnet.
+          40–60% cost reduction with no quality loss.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📋</div>
+        <h3>Reflexion Replay</h3>
+        <p>
+          Post-incident timeline showing every hypothesis the engine considered —
+          and why each was accepted or rejected. Your compliance team will love it.
+          Your future self will too.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TERMINAL -->
+  <section style="padding-top: 0;">
+    <div class="terminal">
+      <div><span class="comment"># Reflexion Engine — RCA output (structured, Pydantic-validated)</span></div>
+      <div>&nbsp;</div>
+      <div><span class="prompt">$</span> curl -s warblecloud-ai-agent/rca \</div>
+      <div>&nbsp;&nbsp;-d '{"incident_id": "INC-4821", "signals": ["latency_p99_spike", "db_connection_pool_exhausted"]}'</div>
+      <div>&nbsp;</div>
+      <div>{</div>
+      <div>&nbsp;&nbsp;<span class="value">"hypothesis"</span>: "Connection pool exhausted by slow query in payments service",</div>
+      <div>&nbsp;&nbsp;<span class="value">"confidence"</span>: 0.91,</div>
+      <div>&nbsp;&nbsp;<span class="value">"evidence"</span>: ["db.pool.active > 95% for 4m", "payments.query_latency P99=8.2s"],</div>
+      <div>&nbsp;&nbsp;<span class="value">"remediation"</span>: ["EXPLAIN ANALYZE on queries >5s", "increase pool size to 50"],</div>
+      <div>&nbsp;&nbsp;<span class="value">"model_used"</span>: "claude-sonnet-4-6",</div>
+      <div>&nbsp;&nbsp;<span class="value">"latency_ms"</span>: 4812</div>
+      <div>}</div>
+      <div>&nbsp;</div>
+      <div><span class="success">✓ RCA complete in 4.8s &nbsp;· &nbsp;confidence: 91% &nbsp;· &nbsp;awaiting HiTL approval</span></div>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section id="stack">
+    <div class="section-label">Tech Stack</div>
+    <h2>Every layer chosen for a reason.<br/>No resume-driven architecture.</h2>
+    <p class="section-sub">
+      Built lean on GCP. Each component earns its place by solving a specific problem
+      the previous tool couldn't handle at production scale.
+    </p>
+    <div class="stack-grid">
+      <div class="stack-card">
+        <div class="stack-layer">LLM Reasoning</div>
+        <div class="stack-info">
+          <h4>Claude Sonnet (Anthropic API)</h4>
+          <p>Actor/Critic loops, structured RCA output via tool use</p>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-layer">LLM Sweep</div>
+        <div class="stack-info">
+          <h4>Gemini 2.0 Flash (Vertex AI)</h4>
+          <p>Fast, cheap broad-sweep queries before deep reasoning</p>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-layer">Orchestration</div>
+        <div class="stack-info">
+          <h4>LangChain + LangSmith</h4>
+          <p>Agent loops with full run tracing, latency, and prompt diffs</p>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-layer">Data Retrieval</div>
+        <div class="stack-info">
+          <h4>LlamaIndex + AlloyDB Omni</h4>
+          <p>RAG pipeline with pgvector + relational queries in one DB</p>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-layer">API Layer</div>
+        <div class="stack-info">
+          <h4>FastAPI on Cloud Run</h4>
+          <p>Serverless, fast cold starts, auto-scaling to zero</p>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-layer">Production Runtime</div>
+        <div class="stack-info">
+          <h4>GKE Autopilot</h4>
+          <p>Managed Kubernetes, cost-efficient node provisioning</p>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-layer">Incident Stream</div>
+        <div class="stack-info">
+          <h4>Pub/Sub + Eventarc</h4>
+          <p>Async, durable bus — replay, dead-letter, fan-out to agents</p>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-layer">HiTL Gate</div>
+        <div class="stack-info">
+          <h4>Cloud Workflows + Slack API</h4>
+          <p>Durable approval state machine for infra actions at scale</p>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-layer">Observability</div>
+        <div class="stack-info">
+          <h4>OpenTelemetry + Cloud Trace</h4>
+          <p>End-to-end spans from Prometheus alert to SRE dashboard</p>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-layer">Cost Control</div>
+        <div class="stack-info">
+          <h4>Cloud Billing API + Budget Alerts</h4>
+          <p>Automatic Cloud Run max-instance caps prevent runaway spend</p>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-layer">Local Dev</div>
+        <div class="stack-info">
+          <h4>Rancher Desktop + Skaffold</h4>
+          <p>Hot-deploy to local k8s on file save — inner loop under 30s</p>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-layer">Security</div>
+        <div class="stack-info">
+          <h4>VPC-SC + IAM Least Privilege</h4>
+          <p>No public IPs on compute, per-component service accounts</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section id="roadmap">
+    <div class="section-label">Roadmap</div>
+    <h2>12 weeks to MVP.<br/>Every sprint ships to a live environment.</h2>
+    <p class="section-sub">
+      No freelancer goes more than 3 days without deploying something real.
+      Architecture decisions recorded as ADRs — coherence across the team.
+    </p>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Weeks 1–2</div>
+        <div class="roadmap-content">
+          <h4>Foundation</h4>
+          <ul>
+            <li>GCP project setup, VPC-SC perimeter, IAM service accounts</li>
+            <li>Rancher Desktop + Skaffold inner loop working locally</li>
+            <li>Claude API + Vertex AI authenticated and callable</li>
+            <li>AlloyDB Omni running on local k8s via Helm chart</li>
+          </ul>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Weeks 3–5</div>
+        <div class="roadmap-content">
+          <h4>Reflexion Engine Core</h4>
+          <ul>
+            <li>Pub/Sub incident stream ingestion from Prometheus/Cloud Ops</li>
+            <li>Actor/Critic agent loop — first hypothesis generation</li>
+            <li>LangSmith tracing active, all steps instrumented</li>
+            <li>Structured RCA output with Pydantic schema validation</li>
+          </ul>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Weeks 6–8</div>
+        <div class="roadmap-content">
+          <h4>Warble Core Brain</h4>
+          <ul>
+            <li>Live incident console with WebSocket + React</li>
+            <li>Gemini/Claude routing layer with complexity scoring</li>
+            <li>Human-in-the-Loop gate via Cloud Workflows</li>
+            <li>Metered billing guardrails and token cliff guard</li>
+          </ul>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Weeks 9–10</div>
+        <div class="roadmap-content">
+          <h4>Production Hardening</h4>
+          <ul>
+            <li>GKE Autopilot deployment with full Helm charts</li>
+            <li>OpenTelemetry end-to-end tracing across all services</li>
+            <li>VPC-SC perimeter locked down, no public compute IPs</li>
+            <li>Load testing + P99 latency benchmarks</li>
+          </ul>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Weeks 11–12</div>
+        <div class="roadmap-content">
+          <h4>MVP Demo Ready</h4>
+          <ul>
+            <li>Compliance velocity dashboard with 48-hour audit export</li>
+            <li>Cost visibility panel — live token spend by agent</li>
+            <li>End-to-end demo: P1 alert → RCA → resolution in &lt;60 seconds</li>
+            <li>MTTR baseline measured, documented, and investor-ready</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROLES -->
+  <section id="roles">
+    <div class="section-label">Open Roles</div>
+    <h2>We hire like we're auditioning<br/>for founding roles.</h2>
+    <p class="section-sub">
+      Work that is real, hard, and portfolio-worthy. The best candidates
+      self-select in. Give us a week and ship something to a live environment.
+    </p>
+    <div class="roles-grid">
+      <div class="role-card">
+        <div class="role-title">AI / ML Engineer</div>
+        <div class="role-mission">LLM Orchestration · Reflexion Engine core</div>
+        <p style="color: var(--muted); font-size: 0.875rem; margin-bottom: 1rem; line-height: 1.6;">
+          Build the Actor/Critic reasoning loop, multi-hop Gemini → Claude escalation,
+          streaming RCA pipeline, and the feedback system that makes the engine smarter with every incident.
+        </p>
+        <div class="role-skills">
+          <span class="skill-tag">LangChain</span>
+          <span class="skill-tag">Claude API</span>
+          <span class="skill-tag">LlamaIndex</span>
+          <span class="skill-tag">FastAPI</span>
+          <span class="skill-tag">Redis</span>
+          <span class="skill-tag">Vertex AI</span>
+          <span class="skill-tag">Prometheus</span>
+        </div>
+      </div>
+      <div class="role-card">
+        <div class="role-title">Platform / Cloud Engineer</div>
+        <div class="role-mission">GCP Infrastructure · Make the AI layer never think about infra</div>
+        <p style="color: var(--muted); font-size: 0.875rem; margin-bottom: 1rem; line-height: 1.6;">
+          Own the dual-environment pipeline, VPC-SC perimeter, Terraform cognitive node module,
+          billing guardrails, and the Human-in-the-Loop Slack approval workflow.
+        </p>
+        <div class="role-skills">
+          <span class="skill-tag">GKE</span>
+          <span class="skill-tag">Terraform</span>
+          <span class="skill-tag">Helm</span>
+          <span class="skill-tag">Cloud Run</span>
+          <span class="skill-tag">VPC-SC</span>
+          <span class="skill-tag">Pub/Sub</span>
+          <span class="skill-tag">Rancher</span>
+        </div>
+      </div>
+      <div class="role-card">
+        <div class="role-title">Full-Stack Engineer</div>
+        <div class="role-mission">Product UI · Make the SRE dashboard as fast as the AI</div>
+        <p style="color: var(--muted); font-size: 0.875rem; margin-bottom: 1rem; line-height: 1.6;">
+          Build the Live Incident Console, Prompt Playground, Compliance Velocity Dashboard,
+          Cost Visibility Panel, and Reflexion Replay — all real-time, all production-grade.
+        </p>
+        <div class="role-skills">
+          <span class="skill-tag">Next.js</span>
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">WebSockets</span>
+          <span class="skill-tag">FastAPI</span>
+          <span class="skill-tag">BigQuery</span>
+          <span class="skill-tag">Recharts/D3</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="inner">
+      <div class="section-label" style="margin-bottom: .75rem;">Early Access</div>
+      <h2>Ready to cut your MTTR from hours to seconds?</h2>
+      <p>
+        We're onboarding a small cohort of SRE teams for the MVP program.
+        You get early access, direct input on the roadmap, and a founding relationship
+        with the team building this.
+      </p>
+      <div class="hero-actions" style="justify-content: center;">
+        <a href="mailto:avinash.etrx@gmail.com" class="btn-primary">Request Early Access</a>
+        <a href="https://github.com/warble-tech" class="btn-ghost">GitHub →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <strong style="color: var(--text);">⬡ Warble Tech</strong>
+      <span style="margin-left: 1rem;">Built with Claude as pair programmer. Deployed on GCP. Shipped from Pune.</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/warble-tech">GitHub</a>
+      <a href="mailto:avinash.etrx@gmail.com">Contact</a>
+    </div>
+  </footer>
+
+</body>
+</html>
