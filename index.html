@@ -391,6 +391,7 @@
     <span class="nav-logo">⬡ Warble Tech</span>
     <ul class="nav-links">
       <li><a href="#product">Product</a></li>
+      <li><a href="#open-solutions">Open Solutions</a></li>
       <li><a href="#stack">Stack</a></li>
       <li><a href="#roadmap">Roadmap</a></li>
       <li><a href="#roles">Roles</a></li>
@@ -548,6 +549,39 @@
       <div>}</div>
       <div>&nbsp;</div>
       <div><span class="success">✓ RCA complete in 4.8s &nbsp;· &nbsp;confidence: 91% &nbsp;· &nbsp;awaiting HiTL approval</span></div>
+    </div>
+  </section>
+
+  <!-- OPEN SOLUTIONS -->
+  <section id="open-solutions">
+    <div class="section-label">Open Solutions</div>
+    <h2>Open-source tools for<br/>Kubernetes teams.</h2>
+    <p class="section-sub">
+      Production-grade utilities from the Warble Tech team — free, open, and built from real SRE pain.
+    </p>
+    <div class="feature-grid" style="margin-top: 3rem;">
+      <div class="feature-card">
+        <div class="feature-icon">🦅</div>
+        <h3>Shrikeops</h3>
+        <p style="margin-bottom: 1.25rem;">
+          Detailed Kubernetes manifest scanner. Catches misconfigurations, security issues, and best-practice
+          violations in your YAML before they reach the cluster — CI-friendly and policy-extensible.
+        </p>
+        <a href="https://github.com/warble-tech/shrikeops" target="_blank" rel="noopener" class="btn-ghost" style="font-size:0.82rem; padding:.5rem 1.1rem; display:inline-block;">
+          View on GitHub →
+        </a>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⎈</div>
+        <h3>Steadyhelm</h3>
+        <p style="margin-bottom: 1.25rem;">
+          MCP server for your Kubernetes cluster. Expose cluster state, Helm releases, and kubectl operations
+          as MCP tools so AI agents and IDE assistants can reason about and act on your infrastructure safely.
+        </p>
+        <a href="https://github.com/warble-tech/steadyhelm" target="_blank" rel="noopener" class="btn-ghost" style="font-size:0.82rem; padding:.5rem 1.1rem; display:inline-block;">
+          View on GitHub →
+        </a>
+      </div>
     </div>
   </section>
 
@@ -904,6 +938,14 @@
                 <label class="solution-option">
                   <input type="checkbox" name="solutions" value="hitl_gate" />
                   <span class="solution-label"><span class="check-box"></span>Human-in-the-Loop Gate</span>
+                </label>
+                <label class="solution-option">
+                  <input type="checkbox" name="solutions" value="shrikeops" />
+                  <span class="solution-label"><span class="check-box"></span>Shrikeops (K8s Scanner)</span>
+                </label>
+                <label class="solution-option">
+                  <input type="checkbox" name="solutions" value="steadyhelm" />
+                  <span class="solution-label"><span class="check-box"></span>Steadyhelm (MCP for K8s)</span>
                 </label>
                 <label class="solution-option">
                   <input type="checkbox" name="solutions" value="custom" />
