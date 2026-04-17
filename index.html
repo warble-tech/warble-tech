@@ -392,8 +392,6 @@
     <ul class="nav-links">
       <li><a href="#product">Product</a></li>
       <li><a href="#open-solutions">Open Solutions</a></li>
-      <li><a href="#stack">Stack</a></li>
-      <li><a href="#roadmap">Roadmap</a></li>
       <li><a href="#roles">Roles</a></li>
     </ul>
     <a href="#early-access" class="nav-cta">Get Early Access</a>
@@ -585,173 +583,6 @@
     </div>
   </section>
 
-  <!-- STACK -->
-  <section id="stack">
-    <div class="section-label">Tech Stack</div>
-    <h2>Every layer chosen for a reason.<br/>No resume-driven architecture.</h2>
-    <p class="section-sub">
-      Built lean on GCP. Each component earns its place by solving a specific problem
-      the previous tool couldn't handle at production scale.
-    </p>
-    <div class="stack-grid">
-      <div class="stack-card">
-        <div class="stack-layer">LLM Reasoning</div>
-        <div class="stack-info">
-          <h4>Claude Sonnet (Anthropic API)</h4>
-          <p>Actor/Critic loops, structured RCA output via tool use</p>
-        </div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-layer">LLM Sweep</div>
-        <div class="stack-info">
-          <h4>Gemini 2.0 Flash (Vertex AI)</h4>
-          <p>Fast, cheap broad-sweep queries before deep reasoning</p>
-        </div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-layer">Orchestration</div>
-        <div class="stack-info">
-          <h4>LangChain + LangSmith</h4>
-          <p>Agent loops with full run tracing, latency, and prompt diffs</p>
-        </div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-layer">Data Retrieval</div>
-        <div class="stack-info">
-          <h4>LlamaIndex + AlloyDB Omni</h4>
-          <p>RAG pipeline with pgvector + relational queries in one DB</p>
-        </div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-layer">API Layer</div>
-        <div class="stack-info">
-          <h4>FastAPI on Cloud Run</h4>
-          <p>Serverless, fast cold starts, auto-scaling to zero</p>
-        </div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-layer">Production Runtime</div>
-        <div class="stack-info">
-          <h4>GKE Autopilot</h4>
-          <p>Managed Kubernetes, cost-efficient node provisioning</p>
-        </div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-layer">Incident Stream</div>
-        <div class="stack-info">
-          <h4>Pub/Sub + Eventarc</h4>
-          <p>Async, durable bus — replay, dead-letter, fan-out to agents</p>
-        </div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-layer">HiTL Gate</div>
-        <div class="stack-info">
-          <h4>Cloud Workflows + Slack API</h4>
-          <p>Durable approval state machine for infra actions at scale</p>
-        </div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-layer">Observability</div>
-        <div class="stack-info">
-          <h4>OpenTelemetry + Cloud Trace</h4>
-          <p>End-to-end spans from Prometheus alert to SRE dashboard</p>
-        </div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-layer">Cost Control</div>
-        <div class="stack-info">
-          <h4>Cloud Billing API + Budget Alerts</h4>
-          <p>Automatic Cloud Run max-instance caps prevent runaway spend</p>
-        </div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-layer">Local Dev</div>
-        <div class="stack-info">
-          <h4>Rancher Desktop + Skaffold</h4>
-          <p>Hot-deploy to local k8s on file save — inner loop under 30s</p>
-        </div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-layer">Security</div>
-        <div class="stack-info">
-          <h4>VPC-SC + IAM Least Privilege</h4>
-          <p>No public IPs on compute, per-component service accounts</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ROADMAP -->
-  <section id="roadmap">
-    <div class="section-label">Roadmap</div>
-    <h2>12 weeks to MVP.<br/>Every sprint ships to a live environment.</h2>
-    <p class="section-sub">
-      No freelancer goes more than 3 days without deploying something real.
-      Architecture decisions recorded as ADRs — coherence across the team.
-    </p>
-    <div class="roadmap">
-      <div class="roadmap-item">
-        <div class="roadmap-phase">Weeks 1–2</div>
-        <div class="roadmap-content">
-          <h4>Foundation</h4>
-          <ul>
-            <li>GCP project setup, VPC-SC perimeter, IAM service accounts</li>
-            <li>Rancher Desktop + Skaffold inner loop working locally</li>
-            <li>Claude API + Vertex AI authenticated and callable</li>
-            <li>AlloyDB Omni running on local k8s via Helm chart</li>
-          </ul>
-        </div>
-      </div>
-      <div class="roadmap-item">
-        <div class="roadmap-phase">Weeks 3–5</div>
-        <div class="roadmap-content">
-          <h4>Reflexion Engine Core</h4>
-          <ul>
-            <li>Pub/Sub incident stream ingestion from Prometheus/Cloud Ops</li>
-            <li>Actor/Critic agent loop — first hypothesis generation</li>
-            <li>LangSmith tracing active, all steps instrumented</li>
-            <li>Structured RCA output with Pydantic schema validation</li>
-          </ul>
-        </div>
-      </div>
-      <div class="roadmap-item">
-        <div class="roadmap-phase">Weeks 6–8</div>
-        <div class="roadmap-content">
-          <h4>Warble Core Brain</h4>
-          <ul>
-            <li>Live incident console with WebSocket + React</li>
-            <li>Gemini/Claude routing layer with complexity scoring</li>
-            <li>Human-in-the-Loop gate via Cloud Workflows</li>
-            <li>Metered billing guardrails and token cliff guard</li>
-          </ul>
-        </div>
-      </div>
-      <div class="roadmap-item">
-        <div class="roadmap-phase">Weeks 9–10</div>
-        <div class="roadmap-content">
-          <h4>Production Hardening</h4>
-          <ul>
-            <li>GKE Autopilot deployment with full Helm charts</li>
-            <li>OpenTelemetry end-to-end tracing across all services</li>
-            <li>VPC-SC perimeter locked down, no public compute IPs</li>
-            <li>Load testing + P99 latency benchmarks</li>
-          </ul>
-        </div>
-      </div>
-      <div class="roadmap-item">
-        <div class="roadmap-phase">Weeks 11–12</div>
-        <div class="roadmap-content">
-          <h4>MVP Demo Ready</h4>
-          <ul>
-            <li>Compliance velocity dashboard with 48-hour audit export</li>
-            <li>Cost visibility panel — live token spend by agent</li>
-            <li>End-to-end demo: P1 alert → RCA → resolution in &lt;60 seconds</li>
-            <li>MTTR baseline measured, documented, and investor-ready</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- ROLES -->
   <section id="roles">
@@ -819,10 +650,10 @@
   <div class="form-section" id="early-access">
     <div class="form-inner">
       <div class="section-label">Early Access</div>
-      <h2>Join the MVP Program</h2>
+      <h2>Break the On-Call Loop.</h2>
       <p class="section-sub">
-        We're onboarding a small cohort of SRE teams. You get early access,
-        direct input on the roadmap, and a founding relationship with the team.
+        Stop duct-taping incidents at 3 AM. Get early access before we go GA —
+        and help us ship the tool your future self will thank you for.
       </p>
 
       <div class="form-layout">
